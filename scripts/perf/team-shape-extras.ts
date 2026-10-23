@@ -39,6 +39,7 @@ export type TeamShapeExtrasOptions = {
   cronJobs: number;
   projects: number;
   worktreeFiles?: number;
+  worktreeFileBytes?: number;
   worktreeInstallFailure?: boolean;
   worktreeColdCommits?: number;
   nestedRepository?: boolean;
@@ -185,7 +186,13 @@ async function seedProjects(options: TeamShapeExtrasOptions) {
           await waitForTeamShapeWriteBudget();
           await fs.mkdir(bucket, { recursive: true });
         }
-        await fs.writeFile(path.join(bucket, `${file}.txt`), "");
+        const content = Buffer.alloc(options.worktreeFileBytes ?? 0);
+        let random = file + 1;
+        for (let offset = 0; offset < content.length; offset++) {
+          random = (Math.imul(random, 1664525) + 1013904223) >>> 0;
+          content[offset] = random >>> 24;
+        }
+        await fs.writeFile(path.join(bucket, `${file}.txt`), content);
       }
       await git("-C", worktreePath, "add", "inventory");
       await git(
@@ -425,6 +432,7 @@ export async function seedTeamShapeExtras(options: TeamShapeExtrasOptions) {
     projects: projectWorktrees.length,
     githubOptionsConnected: options.githubOptionsConnected ?? false,
     worktreeFiles: options.worktreeFiles ?? 0,
+    worktreeFileBytes: options.worktreeFileBytes ?? 0,
     worktreeInstallFailure: options.worktreeInstallFailure ?? false,
     worktreeColdCommits: options.worktreeColdCommits ?? 0,
     nestedRepository: options.nestedRepository ?? false,
