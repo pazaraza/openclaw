@@ -2935,6 +2935,7 @@ html[dir="rtl"] .chat-attachment-loading > span {
   opacity: 0.35;
 }
 
+.chat-controls__access-panel,
 .chat-controls__speed-panel,
 .chat-controls__fast-mode-row {
   gap: 8px;
@@ -2942,6 +2943,7 @@ html[dir="rtl"] .chat-attachment-loading > span {
   border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
 }
 
+.chat-controls__access-panel,
 .chat-controls__speed-panel {
   display: grid;
 }
@@ -3658,4 +3660,33 @@ html[dir="rtl"] .chat-attachment-loading > span {
   .agent-chat__suggestion {
     min-height: 44px;
   }
+}
+
+.chat-controls__access-panel + .chat-controls__reasoning-panel {
+  border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+.chat-controls__access-panel {
+  border-top: 0;
+}
+
+.chat-controls__access-default {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 11px;
+  cursor: var(--cursor-action);
+}
+
+.chat-controls__access-default:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.chat-controls__access-default:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
